@@ -12,7 +12,6 @@ batch_size = 32
 optimizer = tf.keras.optimizers.Adam(learning_rate=lr)
 loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
 
-
 train_dataset = tf.data.Dataset.from_tensor_slices((train_images, train_labels)).shuffle(100).batch(batch_size)
 test_dataset = tf.data.Dataset.from_tensor_slices((test_images, test_labels)).batch(batch_size)
 

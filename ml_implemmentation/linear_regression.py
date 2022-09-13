@@ -24,7 +24,7 @@ class LinearRegression():
 
             # gradient and optimize
             dJ_dw = (2 / n) * np.dot(X.T, (y_hat-y))
-            dJ_db = (2 / n) * np.sum((y_hat - y))
+            dJ_db = (2 / n) * np.sum((y_hat - y), axis=1)
 
             self.w = self.w + self.alpha*dJ_dw
             self.b = self.b + self.alpha*dJ_db

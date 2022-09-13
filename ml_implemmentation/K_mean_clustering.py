@@ -23,7 +23,7 @@ class KMeansClustering():
 
             # update cluster
             for c in range(self.k):
-                self.cluster[c, :] = np.mean(self.lookup[c])
+                self.cluster[c, :] = np.mean(self.X[self.lookup[c]], axis=0) # (1, m_features)
 
         return self.cluster
 

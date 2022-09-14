@@ -39,17 +39,16 @@ class SVM():
 
     def backProp(self, y_hat, y, X):
         # if distance < 0:
+        n_features = y_hat.shape[0]
         distance = 1-y*y_hat #some greater some smaller
         index = np.where(np.any(distance>0, axis=1)) # for smaller
 
         # add W
         base_loss = self.w # m, c
-        base_loss[index, :] -= self.C*np.dot(X[index].T, y[index]) # (m, n)*(n, c) --> (m, c)
+        base_loss -= (self.C/n_features)*np.dot(X[index].T, y[index]) # (m, n)*(n, c) --> (m, c)
 
         # bias
-        bias_loss = self.w
-        bias_loss[index, :] -= self.C*y[index]
-
+        bias_loss = -(self.C/n_features)*np.sum(y[index], axis=0)
         return base_loss, bias_loss
 
     def cost_function(self, y_hat, y):

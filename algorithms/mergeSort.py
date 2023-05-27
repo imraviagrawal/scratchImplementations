@@ -2,60 +2,43 @@
 # link
 # time complexity O(nlogn), space O(n), divide and conquor
 
-
 def mergeSort(array):
     if len(array)>1:
         l = 0
         r = len(array)
+        mid = (l+r)//2
 
-        mid = (l  + r)//2
         left = array[:mid]
         right = array[mid:]
-        l = mergeSort(left)
-        r = mergeSort(right)
+
+        mergeSort(left)
+        mergeSort(right)
 
         i, j, k = 0, 0, 0
-
-        while i < len(left) and j < len(right):
-            if left[i] < right[j]:
+        while i<len(left) and j<len(right):
+            if left[i]<right[j]:
                 array[k] = left[i]
-                i += 1
-
+                i+=1
             else:
                 array[k] = right[j]
                 j += 1
-
             k += 1
 
-
-        while i < len(left):
-            array[k] = left[i]
+        while i<len(left):
+            array[k]=left[i]
+            k += 1
             i += 1
-            k += 1
 
-        while j < len(right):
-            array[k] = right[j]
+        while j<len(right):
+            array[k]=right[j]
+            k += 1
             j += 1
-            k += 1
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-#
 # def mergeSort(array):
 #     if len(array)>1:
 #         mid = len(array)//2
@@ -121,7 +104,7 @@ def mergeSort(array):
 #             k+=1
 
 
-arr = [12, 11, 13, 5, 6, 7]
+arr = [5, 11, 13, 12, 5, 6, 7]
 
 mergeSort(arr)
 print(arr)

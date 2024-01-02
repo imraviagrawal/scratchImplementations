@@ -106,3 +106,22 @@ class MultiHeadAttention(nn.Module):
 #             return o, attention
 #         else:
 #             return o
+
+# Todo Adding test
+def test_forward_Attention():
+    attention = AttentionHead(dim_in=512, dim_q=64, dim_k=64)
+
+    # Tạo các embedding của 3 từ
+    word1 = torch.randn(1, 512)  # Embedding của từ thứ nhất
+    word2 = torch.randn(1, 512)  # Embedding của từ thứ hai
+    word3 = torch.randn(1, 512)  # Embedding của từ thứ ba
+
+    # Gộp các embedding thành một tensor đầu vào
+    input_tensor = torch.cat([word1, word2, word3], dim=0)
+
+    # Forward pass để tính toán đầu ra
+    output = attention(input_tensor)[0] # just values
+
+    # In ra kết quả đầu ra
+    print(output)
+    print(output.shape) #torch.Size([3, 64])

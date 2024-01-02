@@ -55,9 +55,13 @@ class TransformerEncoderLayer(nn.Module):
         return x
 
 class TransformerEncoder(nn.Module):
-    def __init__(self, num_layers, **block_args):
+    def __init__(self, num_layers, dim_model: int = 512,
+        num_heads: int = 6,
+        dim_feedforward: int = 2048,
+        dropout: float = 0.1,):
         super().__init__()
-        self.layers = nn.ModuleList([TransformerEncoderLayer(**block_args) for _ in range(num_layers)])
+        self.layers = nn.ModuleList([TransformerEncoderLayer(dim_model=dim_model, num_heads=num_heads, dim_feedforward=dim_feedforward, dropout=dropout)
+                                     for _ in range(num_layers)])
 
     def forward(self, x, mask=None):
         for l in self.layers:
@@ -115,6 +119,7 @@ class TransformerDecoder(nn.Module):
                  dim_feedforward = 2048,
                  dropout: float = 0.1,
                  ):
+        super().__init__()
         self.layers = nn.ModuleList([TransformerDecoderLayer(dim_model, num_heads, dim_feedforward, dropout) for _ in range(num_layers)])
         self.linear = nn.Linear(dim_model, dim_feedforward)
 
@@ -124,5 +129,22 @@ class TransformerDecoder(nn.Module):
             src = layer(src, tgt)
         return torch.softmax(self.linear(src), dim=-1)
 
+class Transformers(nn.Module):
+    def __init__(self,
+                 num_encoder_layers = 6,
+                 num_decoder_layers = 6,
+                 num_heads = 6,
+                 dim_model = 512,
+                 dim_feedforward = 2048,
+                 dropout = 0.1
+                 ):
+        super().__init__()
+        self.encoder = TransformerEncoder(num_layers=num_encoder_layers, dim_model=dim_model, num_heads=num_heads, dim_feedforward=dim_feedforward, dropout=dropout)
+        self.decoder = TransformerDecoder(num_decoder_layers,
+                 dim_model,
+                 num_heads,
+                 dim_feedforward,
+                 dropout)
 
-
+    def forward(self, src, tgt):
+        return self.decoder(tgt, self.encoder(src))
